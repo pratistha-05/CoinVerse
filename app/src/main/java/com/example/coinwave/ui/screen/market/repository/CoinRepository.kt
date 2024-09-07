@@ -5,9 +5,10 @@ import com.example.coinwave.data.service.model.CoinListResponse
 import retrofit2.Response
 import com.example.coinwave.common.Result
 import com.example.coinwave.networkModule.ApiClient
+import javax.inject.Inject
 
-class CoinRepository(
-  private val apiService: CoinService = ApiClient.coinService // Default initialization
+class CoinRepository @Inject constructor(
+  private val apiService: CoinService
 ) {
   suspend fun getCoins(
 //    coinSort: CoinSort,

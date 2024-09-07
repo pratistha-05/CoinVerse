@@ -1,7 +1,5 @@
 package com.example.coinwave.ui.screen.market
 
-import android.health.connect.datatypes.units.Percentage
-import androidx.compose.foundation.content.MediaType.Companion.Text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +15,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.coinwave.data.service.model.CoinItem
@@ -38,9 +36,9 @@ private val coinList = mutableListOf<CoinItem>()
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketScreen(
-  modifier: Modifier,
-  onCoinClick: (CoinItem) -> Unit,
-  viewModel: MarketViewModel = viewModel() // Obtain the ViewModel instance
+  modifier: Modifier = Modifier,
+//  onCoinClick: (CoinItem) -> Unit,
+  viewModel: MarketViewModel = hiltViewModel()
 
 ) {
   val listState = rememberLazyListState()
@@ -49,7 +47,7 @@ fun MarketScreen(
 
 
   Scaffold(topBar = {
-    MarketTopBar(model.marketCapPercentage)
+    MarketTopBar(25.00, modifier)
   },
     snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
     modifier = modifier
@@ -62,7 +60,8 @@ fun MarketScreen(
         .padding(paddingValues)
     ) {
       MarketList(
-        coinList = viewModel.getCoinsListData(), onCoinClick = onCoinClick,
+        coinList = viewModel.coinList,
+//        onCoinClick = onCoinClick,
         //          coinSort = model.coinSort,
         lazyListState = listState
       )
@@ -74,7 +73,7 @@ fun MarketScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MarketTopBar(
-  marketCapPercentage: Percentage, modifier: Modifier = Modifier
+  marketCapPercentage: Double, modifier: Modifier = Modifier
 ) {
   var menuExpanded by remember { mutableStateOf(false) }
   TopAppBar(title = {
@@ -102,12 +101,10 @@ fun MarketTopBar(
 @Composable
 fun MarketList(
   coinList: List<CoinItem>,
-  onCoinClick: (CoinItem) -> Unit,
+//  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
-  modifier: Modifier
 ) {
   LazyColumn(
-    modifier = modifier,
     contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
     state = lazyListState
   ) {
@@ -115,11 +112,11 @@ fun MarketList(
 
     }
 
-    items(count = coinList.size, key = { coinList[it].id }, itemContent = { index ->
+    items(count = coinList.size, itemContent = { index ->
       val coinListItem = coinList[index]
       MarketCoinItem(
         coin = coinListItem,
-        onCoinClick = { onCoinClick(coinListItem) },
+//        onCoinClick = { onCoinClick(coinListItem) },
       )
     })
   }

@@ -36,7 +36,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.coinwave.data.service.model.BottomNav
 import com.example.coinwave.ui.navigation.NavigationGraph
 import com.example.coinwave.ui.theme.CoinWaveTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   @OptIn(ExperimentalMaterial3Api::class)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +55,7 @@ class MainActivity : ComponentActivity() {
             TopAppBar(
               title = {
                 Text(
-                  "_walkinmoonlight", maxLines = 1, overflow = TextOverflow.Ellipsis
+                  "Good morning", maxLines = 1, overflow = TextOverflow.Ellipsis
                 )
               },
               navigationIcon = {

@@ -6,8 +6,8 @@ import com.example.coinwave.data.service.model.CoinItem
 @Composable
 fun MarketCoinItem(
   coin: CoinItem,
-  onCoinClick: (CoinItem) -> Unit,
+//  onCoinClick: (CoinItem) -> Unit,
 ) {
 
-
+//TODO
 }

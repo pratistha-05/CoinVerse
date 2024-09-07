@@ -6,11 +6,14 @@ import kotlinx.coroutines.launch
 import com.example.coinwave.common.Result
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.repository.CoinRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MarketViewModel(private val repository: CoinRepository): ViewModel(
+@HiltViewModel
+class MarketViewModel @Inject constructor(private val repository: CoinRepository): ViewModel(
 ) {
 
-  private var coinList= mutableListOf<CoinItem>()
+  var coinList= mutableListOf<CoinItem>()
 
 fun getCoinsListData(){
   viewModelScope.launch{
