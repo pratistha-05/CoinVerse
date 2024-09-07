@@ -46,6 +46,8 @@ class MainActivity : ComponentActivity() {
     enableEdgeToEdge()
     setContent {
       CoinWaveTheme {
+        val navController = rememberNavController()
+
         val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
         Scaffold(
@@ -77,10 +79,10 @@ class MainActivity : ComponentActivity() {
             )
           },
           bottomBar = {
-            BottomBar(navController = rememberNavController() )
+            BottomBar(navController = navController )
           }
         ) { innerPadding ->
-          NavigationGraph(navController = rememberNavController())
+          NavigationGraph(navController =navController)
         }
       }
     }

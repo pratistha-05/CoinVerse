@@ -8,40 +8,31 @@ import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.repository.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 @HiltViewModel
-class MarketViewModel @Inject constructor(private val repository: CoinRepository): ViewModel(
-) {
+class MarketViewModel @Inject constructor(
+  private val repository: CoinRepository
+) : ViewModel() {
 
-  var coinList= mutableListOf<CoinItem>()
+  // Exposing the coin list as a StateFlow
+  private val _coinList = MutableStateFlow<List<CoinItem>>(emptyList())
+  val coinList = _coinList.asStateFlow()
 
-fun getCoinsListData(){
-  viewModelScope.launch{
+  fun getCoinsListData() {
+    viewModelScope.launch {
+      val coinsResult: Result<List<CoinItem>> = repository.getCoins()
 
-    val coinsResult: Result<List<CoinItem>> = repository.getCoins()
-
-    when (coinsResult) {
-      is Result.Success -> {
-        coinList=coinsResult.data.toMutableList()
-//        _uiState.update {
-//          it.copy(
-//            coins = coinsResult.data.toMutableList(),
-//            isLoading = false
-//          )
-//        }
-      }
-
-      is Result.Error -> {
-//        _uiState.update {
-//          val errorMessages = it.errorMessageIds + R.string.error_local_coins
-//
-//          it.copy(
-//            errorMessageIds = errorMessages,
-//            isLoading = false
-//          )
-//        }
+      when (coinsResult) {
+        is Result.Success -> {
+          _coinList.update { coinsResult.data }
+        }
+        is Result.Error -> {
+          // Handle error
+        }
       }
     }
   }
-}
 }

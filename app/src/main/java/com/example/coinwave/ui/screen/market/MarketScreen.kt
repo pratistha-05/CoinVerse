@@ -18,6 +18,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,7 +46,11 @@ fun MarketScreen(
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+  val coinList by viewModel.coinList.collectAsState()
 
+  LaunchedEffect(Unit) {
+    viewModel.getCoinsListData()
+  }
 
   Scaffold(topBar = {
     MarketTopBar(25.00, modifier)
@@ -56,13 +62,14 @@ fun MarketScreen(
   ) { paddingValues ->
     Box(
       contentAlignment = Alignment.TopCenter,
-      modifier = Modifier //          .pullRefresh(pullRefreshState)
+      modifier = Modifier
+        //          .pullRefresh(pullRefreshState)
         .padding(paddingValues)
     ) {
       MarketList(
-        coinList = viewModel.coinList,
-//        onCoinClick = onCoinClick,
-        //          coinSort = model.coinSort,
+        coinList = coinList,
+        //        onCoinClick = onCoinClick,
+        //        coinSort = model.coinSort,
         lazyListState = listState
       )
     }
