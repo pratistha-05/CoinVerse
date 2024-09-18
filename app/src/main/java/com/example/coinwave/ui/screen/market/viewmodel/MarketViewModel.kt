@@ -17,9 +17,8 @@ class MarketViewModel @Inject constructor(
   private val repository: CoinRepository
 ) : ViewModel() {
 
-  // Exposing the coin list as a StateFlow
   private val _coinList = MutableStateFlow<List<CoinItem>>(emptyList())
-  val coinList = _coinList.asStateFlow()
+  val coinList = _coinList
 
   fun getCoinsListData() {
     viewModelScope.launch {
@@ -27,7 +26,7 @@ class MarketViewModel @Inject constructor(
 
       when (coinsResult) {
         is Result.Success -> {
-          _coinList.update { coinsResult.data }
+          _coinList.emit(coinsResult.data)
         }
         is Result.Error -> {
           // Handle error

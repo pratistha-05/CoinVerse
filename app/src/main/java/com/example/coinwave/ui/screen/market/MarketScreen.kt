@@ -31,13 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 
-private val coinList = mutableListOf<CoinItem>()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MarketScreen(
+ fun MarketScreen(
   modifier: Modifier = Modifier,
 //  onCoinClick: (CoinItem) -> Unit,
   viewModel: MarketViewModel = hiltViewModel()
@@ -46,11 +46,16 @@ fun MarketScreen(
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-  val coinList by viewModel.coinList.collectAsState()
+  var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
 
   LaunchedEffect(Unit) {
     viewModel.getCoinsListData()
+    viewModel.coinList.collectLatest {
+      coinList=it
+    }
   }
+
+
 
   Scaffold(topBar = {
     MarketTopBar(25.00, modifier)
@@ -115,14 +120,11 @@ fun MarketList(
     contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
     state = lazyListState
   ) {
-    item {
-
-    }
 
     items(count = coinList.size, itemContent = { index ->
       val coinListItem = coinList[index]
-      MarketCoinItem(
-        coin = coinListItem,
+      MarketCoinListItem(
+        item = coinListItem,
 //        onCoinClick = { onCoinClick(coinListItem) },
       )
     })

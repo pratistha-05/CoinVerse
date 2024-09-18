@@ -40,7 +40,7 @@ android {
     compose = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.1"
+    kotlinCompilerExtensionVersion = "1.5.12"
   }
   packaging {
     resources {
@@ -74,5 +74,6 @@ dependencies {
   implementation(libs.logging.interceptor)
   implementation(libs.hilt.navigation.compose)
   implementation(libs.hilt.android)
+  implementation(libs.coil.compose)
   kapt(libs.hilt.android.compiler.v2511)
 }
