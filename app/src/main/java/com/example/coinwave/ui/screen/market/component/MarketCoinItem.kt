@@ -1,22 +1,27 @@
-package com.example.coinwave.ui.screen.market
+package com.example.coinwave.ui.screen.market.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import com.example.coinwave.data.service.model.CoinItem
 
 @Composable
@@ -25,33 +30,49 @@ fun MarketCoinListItem(
 //  onCoinClick: (CoinItem) -> Unit,
 ) {
 
+  val price = item.currentPrice?.let { String.format("%.3f", it.toDouble()) }
+
   Row(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(16.dp),
+      .padding(12.dp),
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.SpaceBetween
-  ) {
+  )
+  {
     Image(
-      painter = rememberImagePainter(item.imageUrl),
+      painter = rememberAsyncImagePainter(item.imageUrl),
       contentDescription = "Coin Image",
       modifier = Modifier
         .size(40.dp)
         .clip(CircleShape)
         .background(Color.LightGray)
     )
+    Spacer(Modifier.width(12.dp))
 
-
-    Text(
-      text = item.name.toString(),
+    Column(
       modifier = Modifier.weight(1f)
-    )
+    ) {
+      Text(
+        text = item.name.toString(), color = Color.White, fontSize = 18.sp, fontWeight = FontWeight.Bold
+      )
+      Text(
+        text = item.symbol.toString(), color = Color.Gray, fontSize = 14.sp
+      )
+    }
+    Spacer(Modifier.width(10.dp))
 
-    // Coin Price
-    Text(
-      text = item.currentPrice.toString(),
-      color = Color.Green
-    )
+    Column(
+      horizontalAlignment = Alignment.End
+    ) {
+      Text(
+        text = "$$price",
+        color = Color.White,
+        fontSize = 16.sp,
+        fontWeight = FontWeight.SemiBold,
+        textAlign = TextAlign.End
+      )
+      PriceChangeIndicator(item.priceChangePercentage24h)
+    }
   }
-
 }

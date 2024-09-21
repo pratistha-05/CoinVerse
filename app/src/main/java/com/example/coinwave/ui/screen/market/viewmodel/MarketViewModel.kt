@@ -9,8 +9,7 @@ import com.example.coinwave.ui.screen.market.repository.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.delay
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
@@ -20,6 +19,14 @@ class MarketViewModel @Inject constructor(
   private val _coinList = MutableStateFlow<List<CoinItem>>(emptyList())
   val coinList = _coinList
 
+  fun startDataRefresh() {
+    viewModelScope.launch {
+      while (true) {
+        getCoinsListData()
+        delay(5000L) // Delay for 5 seconds
+      }
+    }
+  }
   fun getCoinsListData() {
     viewModelScope.launch {
       val coinsResult: Result<List<CoinItem>> = repository.getCoins()
