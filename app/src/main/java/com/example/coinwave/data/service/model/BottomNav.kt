@@ -8,6 +8,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNav(val route: String, val icon: ImageVector, val label: String) {
   object Home : BottomNav("Home", Icons.Default.Home, "Home")
-  object Search : BottomNav("Search", Icons.Default.Search, "Search")
+//  object Search : BottomNav("Search", Icons.Default.Search, "Search")
   object Profile : BottomNav("Favourite", Icons.Default.Favorite, "Favourite")
 }

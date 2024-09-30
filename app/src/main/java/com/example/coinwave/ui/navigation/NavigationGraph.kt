@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.coinwave.data.service.model.BottomNav
 import com.example.coinwave.ui.screen.market.MarketScreen
+import com.example.coinwave.ui.screen.search.SearchScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -15,9 +16,8 @@ fun NavigationGraph(navController: NavHostController) {
 //      onBottomBarVisibilityChanged(true)
       MarketScreen()
     }
-    composable(BottomNav.Search.route) {
-//      onBottomBarVisibilityChanged(true)
-//      Screen2()
+    composable("search") {
+      SearchScreen(navController = navController)
     }
     composable(BottomNav.Profile.route) {
 //      onBottomBarVisibilityChanged(true)

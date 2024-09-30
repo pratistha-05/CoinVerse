@@ -58,8 +58,6 @@ import kotlinx.coroutines.flow.collectLatest
     }
   }
 
-
-
   Scaffold(topBar = {
     MarketTopBar(25.00, modifier)
   },
@@ -139,7 +137,9 @@ fun MarketList(
       items(count = coinList.size, itemContent = { index ->
         val coinListItem = coinList[index]
         MarketCoinListItem(
-          item = coinListItem, //        onCoinClick = { onCoinClick(coinListItem) },
+          item = coinListItem,
+          //TODO
+          //        onCoinClick = { onCoinClick(coinListItem) },
         )
       })
     }

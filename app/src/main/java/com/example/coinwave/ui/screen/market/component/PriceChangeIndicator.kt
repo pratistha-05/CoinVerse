@@ -29,7 +29,6 @@ fun PriceChangeIndicator(
     else -> Triple(Icons.Default.ArrowDropDown, Color.Gray, 0f)
   }
 
-  // Display percentage with icon and color
   Row(
     verticalAlignment = Alignment.CenterVertically,
     horizontalArrangement = Arrangement.End
