@@ -11,7 +11,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -20,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,56 +35,79 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
 import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
- fun MarketScreen(
-  modifier: Modifier = Modifier,
-//  onCoinClick: (CoinItem) -> Unit,
+fun MarketScreen(
+  navController: NavHostController,
+  modifier: Modifier = Modifier, //  onCoinClick: (CoinItem) -> Unit,
   viewModel: MarketViewModel = hiltViewModel()
 
 ) {
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
-  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
   var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
 
   LaunchedEffect(Unit) {
     viewModel.getCoinsListData()
     viewModel.coinList.collectLatest {
-      coinList=it
+      coinList = it
+    }
+  }
+  val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+
+  Scaffold(
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+      TopAppBar(title = {
+        Text(
+          "Good morning", maxLines = 1, overflow = TextOverflow.Ellipsis
+        )
+      }, actions = {
+        IconButton(onClick = {
+          navController.navigate("search")
+        }) {
+          Icon(
+            imageVector = Icons.Default.Search, contentDescription = "Search"
+          )
+        }
+      }, scrollBehavior = scrollBehavior
+      )
+    }, containerColor = Color.Black, contentColor = Color.Black
+  ) { innerPadding ->
+    Scaffold(topBar = {
+      MarketTopBar(25.00, modifier)
+    },
+      snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+      modifier = modifier
+        .fillMaxSize()
+        .nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { paddingValues ->
+      Box(
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+          //          .pullRefresh(pullRefreshState)
+          .padding(paddingValues)
+      ) {
+        MarketList(
+          coinList = coinList,
+          //        onCoinClick = onCoinClick,
+          //        coinSort = model.coinSort,
+          lazyListState = listState
+        )
+      }
     }
   }
 
-  Scaffold(topBar = {
-    MarketTopBar(25.00, modifier)
-  },
-    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-    modifier = modifier
-      .fillMaxSize()
-      .nestedScroll(scrollBehavior.nestedScrollConnection)
-  ) { paddingValues ->
-    Box(
-      contentAlignment = Alignment.TopCenter,
-      modifier = Modifier
-        //          .pullRefresh(pullRefreshState)
-        .padding(paddingValues)
-    ) {
-      MarketList(
-        coinList = coinList,
-        //        onCoinClick = onCoinClick,
-        //        coinSort = model.coinSort,
-        lazyListState = listState
-      )
-    }
-  }
 }
 
 
@@ -98,7 +126,8 @@ fun MarketTopBar(
       )
       marketCapPercentage.let {
         Text(
-          text = "Todo", //            when {
+          text = "Todo",
+          //            when {
           //              it. -> "Market is up"
           //              it. -> "market is down"
           //              else -> "Everything is normal"
@@ -113,8 +142,7 @@ fun MarketTopBar(
 
 @Composable
 fun MarketList(
-  coinList: List<CoinItem>,
-//  onCoinClick: (CoinItem) -> Unit,
+  coinList: List<CoinItem>, //  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
 ) {
   Box(
@@ -122,11 +150,11 @@ fun MarketList(
       .fillMaxSize()
       .padding(12.dp)
       .border(
-        width = 2.dp,
-        color = Color.LightGray,
-        shape = RoundedCornerShape(20.dp)
+        width = 2.dp, color = Color.LightGray, shape = RoundedCornerShape(20.dp)
       )
-      .background(Color(0xFF1A1919), shape = RoundedCornerShape(20.dp)) // Light black background with shape
+      .background(
+        Color(0xFF1A1919), shape = RoundedCornerShape(20.dp)
+      ) // Light black background with shape
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
@@ -137,8 +165,7 @@ fun MarketList(
       items(count = coinList.size, itemContent = { index ->
         val coinListItem = coinList[index]
         MarketCoinListItem(
-          item = coinListItem,
-          //TODO
+          item = coinListItem, //TODO
           //        onCoinClick = { onCoinClick(coinListItem) },
         )
       })
