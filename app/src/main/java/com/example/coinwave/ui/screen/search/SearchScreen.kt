@@ -11,6 +11,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -38,32 +39,38 @@ fun SearchScreen(navController: NavController) {
     topBar = {
       TopAppBar(
         title = {
-            OutlinedTextField(
-              value = searchQuery,
-              onValueChange = { searchQuery = it },
-              placeholder = { Text("Search...") },
-              modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 8.dp),
-              singleLine = true,
-              shape = RoundedCornerShape(16.dp)
+          OutlinedTextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            placeholder = { Text("Search...", color = Color.White) },
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(end = 8.dp),
+            singleLine = true,
+            shape = RoundedCornerShape(16.dp),
+            colors = TextFieldDefaults.colors(
+              focusedTextColor = Color.White,
             )
-        }
-        ,
+          )
+        },
         navigationIcon = {
           IconButton(onClick = {
             navController.popBackStack()
           }) {
             Icon(
               imageVector = Icons.Filled.ArrowBack,
-              contentDescription = "Localized description"
+              contentDescription = "Back",
+              tint = Color.White // White icon color
             )
           }
         },
-        actions = {
-
-        },
+        actions = {},
         scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = Color.Black, // Black background for AppBar
+          titleContentColor = Color.White, // White title text color
+          navigationIconContentColor = Color.White // White icon color
+        )
       )
     },
     containerColor = Color.Black,
