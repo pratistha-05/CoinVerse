@@ -31,4 +31,19 @@ class CoinRepository @Inject constructor(
       Result.Error("Exception: ${e.message}")
     }
   }
+
+  suspend fun searchCoins(query: String): Result<List<CoinItem>> {
+    return try {
+      val response = apiService.searchCoins(query)
+
+      if (response.isSuccessful) {
+        val coins = response.body()?.coinsData?.coinList?.filterNotNull() ?: emptyList()
+        Result.Success(coins)
+      } else {
+        Result.Error("Error: ${response.message()}")
+      }
+    } catch (e: Exception) {
+      Result.Error("Exception: ${e.message}")
+    }
+  }
 }

@@ -2,6 +2,7 @@ package com.example.coinwave.ui.screen.search
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,6 +17,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,14 +27,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.coinwave.data.service.model.CoinItem
+import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(navController: NavController) {
+fun SearchScreen(navController: NavController,
+  viewModel: SearchViewModel = hiltViewModel()
+) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-  var searchQuery by remember { mutableStateOf("") }
+  var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
 
+  val inputText by viewModel.inputText.collectAsState()
   Scaffold(
 
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -40,8 +50,10 @@ fun SearchScreen(navController: NavController) {
       TopAppBar(
         title = {
           OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
+            value = inputText,
+            onValueChange = {
+              viewModel.searchCoins(it)
+                            },
             placeholder = { Text("Search...", color = Color.White) },
             modifier = Modifier
               .fillMaxWidth()
@@ -60,16 +72,16 @@ fun SearchScreen(navController: NavController) {
             Icon(
               imageVector = Icons.Filled.ArrowBack,
               contentDescription = "Back",
-              tint = Color.White // White icon color
+              tint = Color.White
             )
           }
         },
         actions = {},
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
-          containerColor = Color.Black, // Black background for AppBar
-          titleContentColor = Color.White, // White title text color
-          navigationIconContentColor = Color.White // White icon color
+          containerColor = Color.Black,
+          titleContentColor = Color.White,
+          navigationIconContentColor = Color.White 
         )
       )
     },
@@ -77,5 +89,16 @@ fun SearchScreen(navController: NavController) {
     contentColor = Color.Black
   ) { innerPadding ->
 
+    LaunchedEffect(Unit) {
+      viewModel.coinList.collectLatest {
+        coinList = it
+      }
+    }
+
+    LazyColumn {
+      items(coinList.size, itemContent = {
+        coinList[it].name?.let { it1 -> Text(text = it1) }
+      })
+    }
   }
 }

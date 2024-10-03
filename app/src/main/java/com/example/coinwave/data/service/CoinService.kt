@@ -15,4 +15,9 @@ interface CoinService {
     @Query("limit") limit: String = "100"
   ): Response<CoinListResponse>
 
+
+  @GET("search-suggestions")
+  suspend fun searchCoins(
+    @Query("query") query: String?=null,
+  ): Response<CoinListResponse>
 }
