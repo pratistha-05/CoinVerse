@@ -50,7 +50,8 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun MarketScreen(
   navController: NavHostController,
-  modifier: Modifier = Modifier, //  onCoinClick: (CoinItem) -> Unit,
+  modifier: Modifier = Modifier,
+  //  onCoinClick: (CoinItem) -> Unit,
   viewModel: MarketViewModel = hiltViewModel()
 
 ) {
@@ -67,36 +68,42 @@ fun MarketScreen(
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
   Scaffold(
-    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    topBar = {
       TopAppBar(title = {
         Text(
           "Good morning", maxLines = 1, overflow = TextOverflow.Ellipsis
         )
-      }, actions = {
-        IconButton(onClick = {
-          navController.navigate("search")
-        }) {
-          Icon(
-            imageVector = Icons.Default.Search, contentDescription = "Search"
-          )
+      },
+        actions = {
+          IconButton(onClick = {
+            navController.navigate("search")
+          }) {
+            Icon(
+              imageVector = Icons.Default.Search,
+              contentDescription = "Search",
+              tint = Color.White
+            )
+          }
         }
-      }, scrollBehavior = scrollBehavior
+        ,
+        scrollBehavior = scrollBehavior,
+        colors = TopAppBarDefaults.topAppBarColors(
+          containerColor = Color.Black,
+          titleContentColor = Color.White,
+          navigationIconContentColor = Color.White
+        )
       )
-    }, containerColor = Color.Black, contentColor = Color.Black
-  ) { innerPadding ->
-    Scaffold(topBar = {
-      MarketTopBar(25.00, modifier)
     },
-      snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-      modifier = modifier
-        .fillMaxSize()
-        .nestedScroll(scrollBehavior.nestedScrollConnection)
-    ) { paddingValues ->
+    containerColor = Color.Black,
+    contentColor = Color.Black,
+    snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    ) { innerPadding ->
       Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
           //          .pullRefresh(pullRefreshState)
-          .padding(paddingValues)
+          .padding(innerPadding)
       ) {
         MarketList(
           coinList = coinList,
@@ -107,8 +114,6 @@ fun MarketScreen(
       }
     }
   }
-
-}
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -17,7 +17,7 @@ fun NavigationGraph(navController: NavHostController) {
       MarketScreen(navController)
     }
     composable("search") {
-      SearchScreen(navController = navController)
+      SearchScreen( navController)
     }
     composable(BottomNav.Profile.route) {
 //      onBottomBarVisibilityChanged(true)
