@@ -2,14 +2,18 @@ package com.example.coinwave.ui.screen.market
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -40,7 +44,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.coinwave.common.SortParams
 import com.example.coinwave.data.service.model.CoinItem
+import com.example.coinwave.ui.screen.market.component.CoinSortChip
 import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
 import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -66,13 +72,18 @@ fun MarketScreen(
     }
   }
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+  val scrollFraction = scrollBehavior.state.overlappedFraction
+  val dynamicTextColor = if (scrollFraction > 0.5f) Color.Black else Color.White
+
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     topBar = {
       TopAppBar(title = {
         Text(
-          "Good morning", maxLines = 1, overflow = TextOverflow.Ellipsis
+          "Good morning", maxLines = 1,
+          overflow = TextOverflow.Ellipsis,
+          color = dynamicTextColor
         )
       },
         actions = {
@@ -82,7 +93,7 @@ fun MarketScreen(
             Icon(
               imageVector = Icons.Default.Search,
               contentDescription = "Search",
-              tint = Color.White
+              tint = dynamicTextColor
             )
           }
         }
@@ -147,9 +158,13 @@ fun MarketTopBar(
 
 @Composable
 fun MarketList(
-  coinList: List<CoinItem>, //  onCoinClick: (CoinItem) -> Unit,
+  coinList: List<CoinItem>,
+  //  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
-) {
+  ) {
+
+  var selectedSort by remember { mutableStateOf(SortParams.MarketCap) }
+
   Box(
     modifier = Modifier
       .fillMaxSize()
@@ -159,7 +174,7 @@ fun MarketList(
       )
       .background(
         Color(0xFF1A1919), shape = RoundedCornerShape(20.dp)
-      ) // Light black background with shape
+      )
   ) {
     LazyColumn(
       modifier = Modifier.fillMaxSize(),
@@ -167,10 +182,28 @@ fun MarketList(
       state = lazyListState
     ) {
 
+      item {
+        Row(
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          modifier = Modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(bottom = 8.dp)
+        ) {
+          SortParams.entries.forEach { coinSortEntry ->
+            CoinSortChip(
+              coinSort = coinSortEntry,
+              selected = coinSortEntry == selectedSort,
+              onClick = { selectedSort = coinSortEntry }
+            )
+          }
+        }
+      }
+
       items(count = coinList.size, itemContent = { index ->
         val coinListItem = coinList[index]
         MarketCoinListItem(
-          item = coinListItem, //TODO
+          item = coinListItem,
+          //TODO
           //        onCoinClick = { onCoinClick(coinListItem) },
         )
       })

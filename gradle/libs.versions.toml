@@ -23,6 +23,7 @@ okhttp = "4.12.0"
 retrofit = "2.11.0"
 hilt = "2.51.1"
 coil = "2.6.0"
+materialIconsExtended = "1.7.3"
 
 
 [libraries]
@@ -56,6 +57,7 @@ hilt-android-compiler-v2511 = { module = "com.google.dagger:hilt-android-compile
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.0.0" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
