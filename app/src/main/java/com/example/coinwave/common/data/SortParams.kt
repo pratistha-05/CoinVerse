@@ -1,4 +1,4 @@
-package com.example.coinwave.common
+package com.example.coinwave.common.data
 
 import androidx.annotation.StringRes
 import com.example.coinwave.R

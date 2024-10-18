@@ -1,7 +1,5 @@
 package com.example.coinwave.ui.screen.market
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -37,14 +36,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.coinwave.common.SortParams
+import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.component.CoinSortChip
 import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
@@ -165,49 +163,44 @@ fun MarketList(
 
   var selectedSort by remember { mutableStateOf(SortParams.MarketCap) }
 
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .padding(12.dp)
-      .border(
-        width = 2.dp, color = Color.LightGray, shape = RoundedCornerShape(20.dp)
-      )
-      .background(
-        Color(0xFF1A1919), shape = RoundedCornerShape(20.dp)
-      )
-  ) {
-    LazyColumn(
-      modifier = Modifier.fillMaxSize(),
-      contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
-      state = lazyListState
-    ) {
+  LazyColumn(
+    state = lazyListState,
+    contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
+    modifier = Modifier.fillMaxSize()
 
-      item {
-        Row(
-          horizontalArrangement = Arrangement.spacedBy(8.dp),
-          modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-            .padding(bottom = 8.dp)
-        ) {
-          SortParams.entries.forEach { coinSortEntry ->
-            CoinSortChip(
-              coinSort = coinSortEntry,
-              selected = coinSortEntry == selectedSort,
-              onClick = { selectedSort = coinSortEntry }
-            )
-          }
+  ) {
+    item {
+      Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier
+          .horizontalScroll(rememberScrollState())
+          .padding(bottom = 8.dp)
+      ) {
+        SortParams.entries.forEach { coinSortEntry ->
+          CoinSortChip(
+            coinSort = coinSortEntry,
+            selected = coinSortEntry == selectedSort,
+            onClick = { selectedSort = coinSortEntry }
+          )
         }
       }
-
-      items(count = coinList.size, itemContent = { index ->
-        val coinListItem = coinList[index]
-        MarketCoinListItem(
-          item = coinListItem,
-          //TODO
-          //        onCoinClick = { onCoinClick(coinListItem) },
-        )
-      })
     }
+
+    items(
+      count = coinList.size,
+      itemContent = { index ->
+        val coinListItem = coinList[index]
+        Box(modifier = Modifier
+          .fillMaxWidth()
+          .clip(RoundedCornerShape(8.dp))) {
+          MarketCoinListItem(
+            item = coinListItem,
+            //          onCoinClick = { onCoinClick(coinListItem) },
+          )
+        }
+      },
+    )
   }
+
 }
 

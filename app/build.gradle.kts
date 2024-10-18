@@ -77,4 +77,6 @@ dependencies {
   implementation(libs.coil.compose)
   implementation(libs.material.icons.extended)
   kapt(libs.hilt.android.compiler.v2511)
+  implementation(libs.androidx.datastore)
+
 }
