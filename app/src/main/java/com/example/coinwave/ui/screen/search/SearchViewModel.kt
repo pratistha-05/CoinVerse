@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coinwave.common.Result
+import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.repository.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,6 +57,7 @@ class SearchViewModel @Inject constructor(
       }
     }
   }
+
 
   fun clearSearchResults() {
     _coinList.value = emptyList()

@@ -36,6 +36,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.MarketList
 import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
@@ -44,8 +45,8 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(navController: NavController,
-  viewModel: SearchViewModel = hiltViewModel()
+fun SearchScreen(
+  navController: NavController, viewModel: SearchViewModel = hiltViewModel()
 ) {
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
@@ -55,7 +56,7 @@ fun SearchScreen(navController: NavController,
   val inputText by viewModel.inputText.collectAsState()
   Scaffold(
 
-  modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
 
     topBar = {
       TopAppBar(
@@ -63,8 +64,8 @@ fun SearchScreen(navController: NavController,
           OutlinedTextField(
             value = inputText,
             onValueChange = {
-                viewModel.onInputChange(it)
-              },
+              viewModel.onInputChange(it)
+            },
             placeholder = { Text("Search...", color = Color.White) },
             modifier = Modifier
               .fillMaxWidth()
@@ -81,9 +82,7 @@ fun SearchScreen(navController: NavController,
             navController.popBackStack()
           }) {
             Icon(
-              imageVector = Icons.Filled.ArrowBack,
-              contentDescription = "Back",
-              tint = Color.White
+              imageVector = Icons.Filled.ArrowBack, contentDescription = "Back", tint = Color.White
             )
           }
         },
@@ -92,7 +91,7 @@ fun SearchScreen(navController: NavController,
         colors = TopAppBarDefaults.topAppBarColors(
           containerColor = Color.Black,
           titleContentColor = Color.White,
-          navigationIconContentColor = Color.White 
+          navigationIconContentColor = Color.White
         )
       )
     },
@@ -109,17 +108,18 @@ fun SearchScreen(navController: NavController,
     }
     Box(
       contentAlignment = Alignment.TopCenter,
-      modifier = Modifier
-        //          .pullRefresh(pullRefreshState)
+      modifier = Modifier //          .pullRefresh(pullRefreshState)
         .padding(innerPadding)
     ) {
       MarketList(
-        coinList = coinList,
-        //        onCoinClick = onCoinClick,
-        //        coinSort = model.coinSort,
-        lazyListState = listState
+        coinList = coinList, //        onCoinClick = onCoinClick,
+        lazyListState = listState,
+        selectedSort = SortParams.MarketCap,
+        updateSortParams = { sortParams ->
+          SortParams.MarketCap
+        }
       )
     }
-    }
   }
+}
 

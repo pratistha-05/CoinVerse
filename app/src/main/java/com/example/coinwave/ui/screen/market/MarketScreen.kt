@@ -30,6 +30,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,17 +63,22 @@ fun MarketScreen(
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
   var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
-
-  LaunchedEffect(Unit) {
-    viewModel.getCoinsListData()
-    viewModel.coinList.collectLatest {
-      coinList = it
-    }
-  }
+  val selectedSort by viewModel.sortParamsFlow.collectAsState(SortParams.MarketCap)
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   val scrollFraction = scrollBehavior.state.overlappedFraction
   val dynamicTextColor = if (scrollFraction > 0.5f) Color.Black else Color.White
 
+  //when selectsort changes
+  LaunchedEffect(selectedSort) {
+    viewModel.getCoinsListData(selectedSort)
+  }
+
+  //when the MarketScreen is first composed
+  LaunchedEffect(Unit) {
+    viewModel.coinList.collectLatest { coins ->
+      coinList = coins
+    }
+  }
 
   Scaffold(
     modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -118,7 +124,11 @@ fun MarketScreen(
           coinList = coinList,
           //        onCoinClick = onCoinClick,
           //        coinSort = model.coinSort,
-          lazyListState = listState
+          lazyListState = listState,
+          selectedSort = selectedSort ,
+          updateSortParams = { sortParams->
+            viewModel.updateCoinSortParams(sortParams)
+          }
         )
       }
     }
@@ -159,9 +169,10 @@ fun MarketList(
   coinList: List<CoinItem>,
   //  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
+  selectedSort : SortParams,
+  updateSortParams:(SortParams) -> Unit
   ) {
 
-  var selectedSort by remember { mutableStateOf(SortParams.MarketCap) }
 
   LazyColumn(
     state = lazyListState,
@@ -180,7 +191,7 @@ fun MarketList(
           CoinSortChip(
             coinSort = coinSortEntry,
             selected = coinSortEntry == selectedSort,
-            onClick = { selectedSort = coinSortEntry }
+            onClick = { updateSortParams(coinSortEntry) }
           )
         }
       }
