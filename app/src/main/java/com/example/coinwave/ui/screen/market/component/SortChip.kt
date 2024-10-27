@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.example.coinwave.common.data.SortParams
 
@@ -24,6 +25,8 @@ fun CoinSortChip(
   onClick: () -> Unit,
   modifier: Modifier = Modifier
 ) {
+  val customColor= Color(0xFF232324) // Example custom color
+
   FilterChip(
     label = { Text(text = stringResource(coinSort.nameId)) },
     onClick = onClick,
@@ -42,15 +45,15 @@ fun CoinSortChip(
         tint = if (selected) {
           MaterialTheme.colorScheme.onSurface
         } else {
-          MaterialTheme.colorScheme.onSurfaceVariant
+          Color.White
         },
         contentDescription = null
       )
     },
 
       colors = FilterChipDefaults.filterChipColors(
-      containerColor = MaterialTheme.colorScheme.background,
-      labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+      containerColor = customColor,
+      labelColor = Color.White,
       selectedContainerColor = MaterialTheme.colorScheme.surface,
       selectedLabelColor = MaterialTheme.colorScheme.onSurface,
     ),

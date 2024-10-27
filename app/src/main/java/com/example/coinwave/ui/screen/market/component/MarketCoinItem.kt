@@ -34,12 +34,6 @@ fun MarketCoinListItem(
 ) {
 
   val price = item.currentPrice?.let { String.format("%.3f", it.toDouble()) }
-  Surface(
-    modifier = Modifier
-      .fillMaxWidth()
-      .background(color = Color.Black)
-//      .clickable { onCoinClick(coin) }
-  ) {
     Row(
       modifier = Modifier.fillMaxWidth().padding(12.dp),
       verticalAlignment = Alignment.CenterVertically,
@@ -80,5 +74,4 @@ fun MarketCoinListItem(
         PriceChangeIndicator(item.priceChangePercentage24h)
       }
     }
-  }
 }

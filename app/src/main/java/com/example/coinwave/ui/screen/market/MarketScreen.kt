@@ -1,5 +1,6 @@
 package com.example.coinwave.ui.screen.market
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -117,13 +118,12 @@ fun MarketScreen(
       Box(
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
-          //          .pullRefresh(pullRefreshState)
           .padding(innerPadding)
+          .background(Color.Black)
       ) {
         MarketList(
           coinList = coinList,
           //        onCoinClick = onCoinClick,
-          //        coinSort = model.coinSort,
           lazyListState = listState,
           selectedSort = selectedSort ,
           updateSortParams = { sortParams->
@@ -172,8 +172,6 @@ fun MarketList(
   selectedSort : SortParams,
   updateSortParams:(SortParams) -> Unit
   ) {
-
-
   LazyColumn(
     state = lazyListState,
     contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
@@ -201,14 +199,10 @@ fun MarketList(
       count = coinList.size,
       itemContent = { index ->
         val coinListItem = coinList[index]
-        Box(modifier = Modifier
-          .fillMaxWidth()
-          .clip(RoundedCornerShape(8.dp))) {
           MarketCoinListItem(
             item = coinListItem,
             //          onCoinClick = { onCoinClick(coinListItem) },
           )
-        }
       },
     )
   }
