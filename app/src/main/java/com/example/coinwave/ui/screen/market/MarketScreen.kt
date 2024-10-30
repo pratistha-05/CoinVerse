@@ -86,7 +86,7 @@ fun MarketScreen(
     topBar = {
       TopAppBar(title = {
         Text(
-          "Good morning", maxLines = 1,
+          "Cryptocurrency", maxLines = 1,
           overflow = TextOverflow.Ellipsis,
           color = dynamicTextColor
         )
@@ -144,7 +144,7 @@ fun MarketTopBar(
   TopAppBar(title = {
     Column {
       Text(
-        text = "Good Morning",
+        text = "Cryptocurrency",
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onBackground
       )
@@ -170,7 +170,8 @@ fun MarketList(
   //  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
   selectedSort : SortParams,
-  updateSortParams:(SortParams) -> Unit
+  updateSortParams:(SortParams) -> Unit,
+  isSearching: Boolean = false,
   ) {
   LazyColumn(
     state = lazyListState,
@@ -178,22 +179,20 @@ fun MarketList(
     modifier = Modifier.fillMaxSize()
 
   ) {
-    item {
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier
-          .horizontalScroll(rememberScrollState())
-          .padding(bottom = 8.dp)
-      ) {
-        SortParams.entries.forEach { coinSortEntry ->
-          CoinSortChip(
-            coinSort = coinSortEntry,
-            selected = coinSortEntry == selectedSort,
-            onClick = { updateSortParams(coinSortEntry) }
-          )
-        }
-      }
-    }
+   if(!isSearching) {
+     item {
+       Row(
+         horizontalArrangement = Arrangement.spacedBy(8.dp),
+         modifier = Modifier.horizontalScroll(rememberScrollState()).padding(bottom = 8.dp)
+       ) {
+         SortParams.entries.forEach { coinSortEntry ->
+           CoinSortChip(coinSort = coinSortEntry,
+             selected = coinSortEntry == selectedSort,
+             onClick = { updateSortParams(coinSortEntry) })
+         }
+       }
+     }
+   }
 
     items(
       count = coinList.size,
@@ -201,11 +200,11 @@ fun MarketList(
         val coinListItem = coinList[index]
           MarketCoinListItem(
             item = coinListItem,
+            modifier = Modifier.padding(bottom = 8.dp)
             //          onCoinClick = { onCoinClick(coinListItem) },
           )
       },
     )
   }
-
 }
 

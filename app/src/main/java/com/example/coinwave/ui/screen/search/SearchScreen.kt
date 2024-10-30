@@ -1,11 +1,13 @@
 package com.example.coinwave.ui.screen.search
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,14 +35,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.coinwave.R
 import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.MarketList
-import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
-import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +69,7 @@ fun SearchScreen(
             onValueChange = {
               viewModel.onInputChange(it)
             },
-            placeholder = { Text("Search...", color = Color.White) },
+            placeholder = { Text("Search...") },
             modifier = Modifier
               .fillMaxWidth()
               .padding(end = 8.dp),
@@ -111,14 +114,34 @@ fun SearchScreen(
       modifier = Modifier //          .pullRefresh(pullRefreshState)
         .padding(innerPadding)
     ) {
-      MarketList(
-        coinList = coinList, //        onCoinClick = onCoinClick,
-        lazyListState = listState,
-        selectedSort = SortParams.MarketCap,
-        updateSortParams = { sortParams ->
-          SortParams.MarketCap
+      if (inputText.isBlank()) {
+        Column(
+          modifier = Modifier.fillMaxSize(),
+          verticalArrangement = Arrangement.Center,
+          horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+          Image(
+            painter = painterResource(id = R.drawable.search_empty_state),
+            contentDescription = "Empty State",
+            modifier = Modifier.size(150.dp)
+          )
+          Text(
+            text = "No results found",
+            color = Color.White,
+            fontSize = 18.sp,
+          )
         }
-      )
+      } else {
+        MarketList(
+          coinList = coinList, //        onCoinClick = onCoinClick,
+          lazyListState = listState,
+          selectedSort = SortParams.MarketCap,
+          updateSortParams = { sortParams ->
+            SortParams.MarketCap
+          },
+          isSearching = true
+        )
+      }
     }
   }
 }
