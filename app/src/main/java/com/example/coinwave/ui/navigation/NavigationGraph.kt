@@ -13,15 +13,12 @@ import com.example.coinwave.ui.screen.search.SearchScreen
 fun NavigationGraph(navController: NavHostController) {
   NavHost(navController, startDestination = BottomNav.Home.route) {
     composable(BottomNav.Home.route) {
-//      onBottomBarVisibilityChanged(true)
       MarketScreen(navController)
     }
-    composable("search") {
-      SearchScreen( navController)
+    composable("favourite") {
     }
     composable(BottomNav.Profile.route) {
-//      onBottomBarVisibilityChanged(true)
-//      Screen3()
+    //      Screen3()
     }
   }
 }

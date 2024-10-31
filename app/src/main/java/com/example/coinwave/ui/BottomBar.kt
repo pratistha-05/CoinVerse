@@ -16,15 +16,13 @@ import com.example.coinwave.data.service.model.BottomNav
 
 @Composable
 fun BottomBar(
-  navController: NavHostController
-) {
+  navController: NavHostController) {
   val screens = listOf(
     BottomNav.Home, BottomNav.Profile
   )
-
   NavigationBar(
     modifier = Modifier,
-    containerColor = Color.LightGray,
+    containerColor = Color.Black,
   ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -48,11 +46,10 @@ fun BottomBar(
           }
         },
         colors = NavigationBarItemDefaults.colors(
-          unselectedTextColor = Color.Gray,
-          selectedTextColor = Color.Black,
-          selectedIconColor = Color.Black,
-          unselectedIconColor = Color.Black,
-          indicatorColor = Color.White
+          selectedTextColor = Color.White,
+          selectedIconColor = Color.White,
+          unselectedIconColor = Color.Gray,
+          indicatorColor = Color.Black
         ),
       )
     }
