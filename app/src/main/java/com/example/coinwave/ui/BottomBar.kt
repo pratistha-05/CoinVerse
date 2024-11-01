@@ -18,7 +18,7 @@ import com.example.coinwave.data.service.model.BottomNav
 fun BottomBar(
   navController: NavHostController) {
   val screens = listOf(
-    BottomNav.Home, BottomNav.Profile
+    BottomNav.Home, BottomNav.Favourite
   )
   NavigationBar(
     modifier = Modifier,

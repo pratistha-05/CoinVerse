@@ -78,5 +78,7 @@ dependencies {
   implementation(libs.material.icons.extended)
   kapt(libs.hilt.android.compiler.v2511)
   implementation(libs.androidx.datastore)
-
+  implementation(libs.androidx.room.runtime)
+  implementation(libs.androidx.room.ktx)
+  kapt(libs.androidx.room.compiler)
 }
