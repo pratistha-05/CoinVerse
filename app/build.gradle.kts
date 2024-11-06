@@ -75,6 +75,7 @@ dependencies {
   implementation(libs.hilt.navigation.compose)
   implementation(libs.hilt.android)
   implementation(libs.coil.compose)
+  implementation(libs.coil.svg.compose)
   implementation(libs.material.icons.extended)
   kapt(libs.hilt.android.compiler.v2511)
   implementation(libs.androidx.datastore)

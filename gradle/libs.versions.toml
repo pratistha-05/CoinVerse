@@ -58,6 +58,7 @@ hilt-android-compiler-v2511 = { module = "com.google.dagger:hilt-android-compile
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.0.0" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+coil-svg-compose = {module = "io.coil-kt:coil-svg", version.ref = "coil"}
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 androidx-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

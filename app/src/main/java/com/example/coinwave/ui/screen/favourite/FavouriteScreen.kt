@@ -1,6 +1,7 @@
 package com.example.coinwave.ui.screen.favourite
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,17 +31,17 @@ fun FavouriteScreen(  navController: NavController,
 
   if (favouriteCoins.isEmpty()) {
     Column(
-      modifier = Modifier.fillMaxSize(),
+      modifier = Modifier.fillMaxSize().background(Color.Black),
       verticalArrangement = Arrangement.Center,
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Image(
-        painter = painterResource(id = R.drawable.search_empty_state),
+        painter = painterResource(id = R.drawable.favourite_empty_state),
         contentDescription = "Empty State",
         modifier = Modifier.size(150.dp)
       )
       Text(
-        text = "No results found",
+        text = "No favourites found",
         color = Color.White,
         fontSize = 18.sp,
       )
