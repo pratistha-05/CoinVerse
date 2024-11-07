@@ -66,11 +66,6 @@ fun MarketScreen(
   val scrollFraction = scrollBehavior.state.overlappedFraction
   val dynamicTextColor = if (scrollFraction > 0.5f) Color.Black else Color.White
 
-  //when selectsort changes
-  LaunchedEffect(selectedSort) {
-    viewModel.getCoinsListData(selectedSort)
-  }
-
   //when the MarketScreen is first composed
   LaunchedEffect(Unit) {
     viewModel.coinList.collectLatest { coins ->

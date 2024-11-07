@@ -93,7 +93,7 @@ fun SearchScreen(
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
           containerColor = Color.Black,
-          titleContentColor = Color.White,
+          titleContentColor = Color.Black,
           navigationIconContentColor = Color.White
         )
       )

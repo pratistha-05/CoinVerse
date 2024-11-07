@@ -55,7 +55,7 @@ fun MarketCoinListItem(
       val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
           .data(item.imageUrl)
-          .error(R.drawable.ic_launcher_background)
+          .error(R.drawable.coin_verse_icon)
           .decoderFactory(SvgDecoder.Factory())
           .build()
       )
