@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
@@ -41,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
@@ -60,17 +64,16 @@ fun MarketScreen(
 ) {
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
-  var coinList by remember { mutableStateOf<List<CoinItem>>(emptyList()) }
+  val coinList by viewModel.coinList.collectAsState()
   val selectedSort by viewModel.sortParamsFlow.collectAsState(SortParams.MarketCap)
   val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
   val scrollFraction = scrollBehavior.state.overlappedFraction
   val dynamicTextColor = if (scrollFraction > 0.5f) Color.Black else Color.White
+  val lifecycleOwner = LocalLifecycleOwner.current
 
-  //when the MarketScreen is first composed
+  // Start the periodic refresh only when the screen is visible
   LaunchedEffect(Unit) {
-    viewModel.coinList.collectLatest { coins ->
-      coinList = coins
-    }
+    viewModel.startPeriodicDataRefresh(lifecycleOwner)
   }
 
   Scaffold(
@@ -186,17 +189,19 @@ fun MarketList(
      }
    }
 
-    items(
-      count = coinList.size,
-      itemContent = { index ->
-        val coinListItem = coinList[index]
-          MarketCoinListItem(
-            item = coinListItem,
-            modifier = Modifier.padding(bottom = 8.dp)
-            //          onCoinClick = { onCoinClick(coinListItem) },
-          )
-      },
-    )
+    itemsIndexed(coinList) { index, coinListItem ->
+      if (index > 0) {
+        // Row between items
+        Spacer(modifier = Modifier.height(8.dp))
+      }
+
+      // List item content
+      MarketCoinListItem(
+        item = coinListItem,
+        modifier = Modifier.padding(bottom = 8.dp)
+        // onCoinClick = { onCoinClick(coinListItem) }
+      )
+    }
   }
 }
 

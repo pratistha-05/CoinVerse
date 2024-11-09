@@ -76,7 +76,7 @@ fun SearchScreen(
             singleLine = true,
             shape = RoundedCornerShape(16.dp),
             colors = TextFieldDefaults.colors(
-              focusedTextColor = Color.White,
+              cursorColor = Color.Black
             )
           )
         },

@@ -1,6 +1,11 @@
 package com.example.coinwave.ui.screen.market.viewmodel
 
+import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.example.coinwave.common.Result
@@ -13,6 +18,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 
 @HiltViewModel
 class MarketViewModel @Inject constructor(
@@ -26,25 +32,20 @@ class MarketViewModel @Inject constructor(
   private val _sortParamsFlow = MutableStateFlow<SortParams>(SortParams.MarketCap)
   val sortParamsFlow: StateFlow<SortParams> = _sortParamsFlow
 
-  init {
-    viewModelScope.launch {
-      preferenceUseCase.getSortParams().collect { sortParams ->
-        _sortParamsFlow.emit(sortParams)
-        getCoinsListData(sortParams)
+  fun startPeriodicDataRefresh(lifecycleOwner: LifecycleOwner) {
+    lifecycleOwner.lifecycleScope.launch {
+      lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        sortParamsFlow.collect { sortParams ->
+          while (isActive) {
+            getCoinsListData(sortParams)
+            delay(12000)
+          }
+        }
       }
     }
   }
 
-  fun startDataRefresh() {
-    viewModelScope.launch {
-      while (true) {
-        getCoinsListData(sortParamsFlow.value)
-        delay(5000L) // Delay for 5 seconds
-      }
-    }
-  }
 
-  //TODO: Add sort param here
   fun getCoinsListData(sortParams: SortParams) {
     viewModelScope.launch {
       val coinsResult: Result<List<CoinItem>> = repository.getCoins(sortParams)
@@ -54,7 +55,6 @@ class MarketViewModel @Inject constructor(
           _coinList.emit(coinsResult.data)
         }
         is Result.Error -> {
-          // Handle error
         }
       }
     }
