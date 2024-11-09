@@ -1,5 +1,6 @@
 package com.example.coinwave.ui.screen.market
 
+import ProgressTimer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -178,7 +180,9 @@ fun MarketList(
      item {
        Row(
          horizontalArrangement = Arrangement.spacedBy(8.dp),
-         modifier = Modifier.horizontalScroll(rememberScrollState()).padding(bottom = 8.dp)
+         modifier = Modifier
+           .horizontalScroll(rememberScrollState())
+           .padding(bottom = 8.dp)
        ) {
          SortParams.entries.forEach { coinSortEntry ->
            CoinSortChip(coinSort = coinSortEntry,
@@ -190,17 +194,20 @@ fun MarketList(
    }
 
     itemsIndexed(coinList) { index, coinListItem ->
-      if (index > 0) {
-        // Row between items
+      if (index == 0) {
+        Row(
+          modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+        ) {
+          ProgressTimer()
+          Spacer(modifier = Modifier.width(8.dp))
+        }
         Spacer(modifier = Modifier.height(8.dp))
+      } else {
+        MarketCoinListItem(
+          item = coinListItem,
+          modifier = Modifier.padding(bottom = 8.dp) // onCoinClick = { onCoinClick(coinListItem) }
+        )
       }
-
-      // List item content
-      MarketCoinListItem(
-        item = coinListItem,
-        modifier = Modifier.padding(bottom = 8.dp)
-        // onCoinClick = { onCoinClick(coinListItem) }
-      )
     }
   }
 }
