@@ -20,7 +20,7 @@ CoinVerse is an Android cryptocurrency app providing real-time coin prices, pric
 
   
 ## Screenshots
-<img src="https://github.com/user-attachments/assets/90807c52-8dee-4e33-a0c1-d1720e850c8e" width="300">
+<img src="https://github.com/user-attachments/assets/fbab0485-bf38-48ed-9837-d560ee01f61d" width="300">
 
 <img src="https://github.com/user-attachments/assets/0823c18a-2928-43e4-b3f6-5769ae3af3c2" width="300">  
 
