@@ -32,19 +32,25 @@ class MarketViewModel @Inject constructor(
   private val _sortParamsFlow = MutableStateFlow<SortParams>(SortParams.MarketCap)
   val sortParamsFlow: StateFlow<SortParams> = _sortParamsFlow
 
-  fun startPeriodicDataRefresh(lifecycleOwner: LifecycleOwner) {
-    lifecycleOwner.lifecycleScope.launch {
-      lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        sortParamsFlow.collect { sortParams ->
-          while (isActive) {
-            getCoinsListData(sortParams)
-            delay(12000)
-          }
-        }
+  init {
+    viewModelScope.launch {
+      preferenceUseCase.getSortParams().collect { sortParams ->
+        _sortParamsFlow.emit(sortParams)
+        getCoinsListData(sortParams)
       }
     }
   }
 
+  fun startPeriodicDataRefresh(lifecycleOwner: LifecycleOwner) {
+    lifecycleOwner.lifecycleScope.launch {
+      lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        while (isActive) {
+          getCoinsListData(_sortParamsFlow.value)
+          delay(12000)
+        }
+      }
+    }
+  }
 
   fun getCoinsListData(sortParams: SortParams) {
     viewModelScope.launch {

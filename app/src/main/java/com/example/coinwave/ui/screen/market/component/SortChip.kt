@@ -43,7 +43,7 @@ fun CoinSortChip(
       Icon(
         imageVector = imageVector,
         tint = if (selected) {
-          MaterialTheme.colorScheme.onSurface
+          Color.Black
         } else {
           Color.White
         },
@@ -54,8 +54,8 @@ fun CoinSortChip(
       colors = FilterChipDefaults.filterChipColors(
       containerColor = customColor,
       labelColor = Color.White,
-      selectedContainerColor = MaterialTheme.colorScheme.surface,
-      selectedLabelColor = MaterialTheme.colorScheme.onSurface,
+      selectedContainerColor = Color.White,
+      selectedLabelColor = Color.Black,
     ),
     shape = MaterialTheme.shapes.small,
     border = null,

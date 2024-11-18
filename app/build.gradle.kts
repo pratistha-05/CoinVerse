@@ -11,10 +11,10 @@ android {
   compileSdk = 34
 
   defaultConfig {
-    applicationId = "com.example.coinwave"
+    applicationId = "com.pratistha.coinverse"
     minSdk = 24
     targetSdk = 34
-    versionCode = 1
+    versionCode = 2
     versionName = "1.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -26,6 +26,7 @@ android {
   buildTypes {
     release {
       isMinifyEnabled = false
+      isDebuggable = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
