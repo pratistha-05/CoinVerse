@@ -1,4 +1,4 @@
-package com.example.coinwave.data.source
+package com.example.coinwave.data.source.preferences
 
 import com.example.coinwave.common.data.SortParams
 import kotlinx.coroutines.flow.Flow

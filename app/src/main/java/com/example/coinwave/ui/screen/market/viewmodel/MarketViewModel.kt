@@ -1,6 +1,5 @@
 package com.example.coinwave.ui.screen.market.viewmodel
 
-import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -11,7 +10,7 @@ import kotlinx.coroutines.launch
 import com.example.coinwave.common.Result
 import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
-import com.example.coinwave.data.source.PreferenceUseCase
+import com.example.coinwave.data.source.preferences.PreferenceUseCase
 import com.example.coinwave.ui.screen.market.repository.CoinRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

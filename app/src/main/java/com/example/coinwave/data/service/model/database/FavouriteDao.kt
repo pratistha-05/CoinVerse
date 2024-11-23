@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavouriteDao {
-  @Query("SELECT * FROM Coin")
+  @Query("SELECT * FROM favourite_data_table")
   fun getAllFavourites(): Flow<List<Coin>>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

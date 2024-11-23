@@ -3,7 +3,7 @@ package com.example.coinwave.data.service.model.database
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "favourite_data_table")
 data class Coin(
   @PrimaryKey
   val id: String,

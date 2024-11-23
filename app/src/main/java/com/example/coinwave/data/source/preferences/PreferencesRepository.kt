@@ -1,4 +1,4 @@
-package com.example.coinwave.data.source
+package com.example.coinwave.data.source.preferences
 
 import androidx.datastore.core.DataStore
 import com.example.coinwave.common.data.MarketPreferences
