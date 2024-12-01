@@ -11,7 +11,7 @@ import com.example.coinwave.data.service.model.BottomNav
 import com.example.coinwave.data.service.model.Screen
 import com.example.coinwave.ui.screen.favourite.FavouriteScreen
 import com.example.coinwave.ui.screen.market.MarketScreen
-import com.example.coinwave.ui.screen.market.details.DetailsScreen
+import com.example.coinwave.ui.screen.details.DetailsScreen
 import com.example.coinwave.ui.screen.search.SearchScreen
 
 @Composable

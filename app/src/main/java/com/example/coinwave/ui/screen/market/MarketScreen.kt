@@ -52,8 +52,6 @@ import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.ui.screen.market.component.CoinSortChip
 import com.example.coinwave.ui.screen.market.component.MarketCoinListItem
-import com.example.coinwave.ui.screen.market.viewmodel.MarketViewModel
-import kotlinx.coroutines.flow.collectLatest
 
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,4 +1,4 @@
-package com.example.coinwave.ui.screen.market.viewmodel
+package com.example.coinwave.ui.screen.market
 
 import android.util.Log
 import androidx.lifecycle.Lifecycle
@@ -13,14 +13,11 @@ import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.repository.CoinRepository
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.data.source.preferences.PreferenceUseCase
-import com.example.coinwave.data.source.network.ApiDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.isActive
 
 @HiltViewModel

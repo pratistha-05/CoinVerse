@@ -1,4 +1,4 @@
-package com.example.coinwave.ui.screen.market.details
+package com.example.coinwave.ui.screen.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

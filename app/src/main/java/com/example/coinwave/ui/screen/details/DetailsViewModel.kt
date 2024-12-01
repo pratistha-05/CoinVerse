@@ -1,4 +1,4 @@
-package com.example.coinwave.ui.screen.market.details
+package com.example.coinwave.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
