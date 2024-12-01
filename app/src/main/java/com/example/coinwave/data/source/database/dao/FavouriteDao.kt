@@ -1,11 +1,11 @@
-package com.example.coinwave.data.service.model.database
+package com.example.coinwave.data.source.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.coinwave.data.service.model.CoinItem
+import com.example.coinwave.data.source.database.Coin
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -18,4 +18,7 @@ interface FavouriteDao {
 
   @Delete
   suspend fun deleteFavourite(coin: Coin)
+
+  @Query("DELETE FROM favourite_data_table")
+  fun deleteAllFavouriteCoins()
 }

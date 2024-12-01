@@ -1,5 +1,6 @@
 package com.example.coinwave.ui.screen.market.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -9,14 +10,17 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import com.example.coinwave.common.Result
 import com.example.coinwave.common.data.SortParams
+import com.example.coinwave.data.repository.CoinRepository
 import com.example.coinwave.data.service.model.CoinItem
 import com.example.coinwave.data.source.preferences.PreferenceUseCase
-import com.example.coinwave.ui.screen.market.repository.CoinRepository
+import com.example.coinwave.data.source.network.ApiDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.isActive
 
 @HiltViewModel
@@ -60,6 +64,7 @@ class MarketViewModel @Inject constructor(
           _coinList.emit(coinsResult.data)
         }
         is Result.Error -> {
+          Log.e("MarketViewModel", "Error fetching coins: ${coinsResult.message}")
         }
       }
     }

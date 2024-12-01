@@ -3,6 +3,7 @@ package com.example.coinwave.ui.screen.market.component
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,8 +36,8 @@ import com.example.coinwave.data.service.model.CoinItem
 @Composable
 fun MarketCoinListItem(
   item: CoinItem,
-  modifier: Modifier
-  // onCoinClick: (CoinItem) -> Unit,
+  modifier: Modifier,
+   onCoinClick: (CoinItem) -> Unit,
 ) {
   val price = item.currentPrice?.let { String.format("%.3f", it.toDouble()) }
 
@@ -46,6 +47,7 @@ fun MarketCoinListItem(
       .clip(RoundedCornerShape(8.dp))
       .background(Color(0xFF232324))
       .padding(10.dp)
+      .clickable { onCoinClick(item) }
   ) {
     Row(
       modifier = Modifier.fillMaxWidth(),

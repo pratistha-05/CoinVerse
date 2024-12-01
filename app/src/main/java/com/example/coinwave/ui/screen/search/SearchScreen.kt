@@ -139,7 +139,8 @@ fun SearchScreen(
           updateSortParams = { sortParams ->
             SortParams.MarketCap
           },
-          isSearching = true
+          isSearching = true,
+          onCoinClick = {}
         )
       }
     }

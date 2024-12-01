@@ -1,12 +1,10 @@
 package com.example.coinwave.ui.screen.search
 
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coinwave.common.Result
-import com.example.coinwave.common.data.SortParams
 import com.example.coinwave.data.service.model.CoinItem
-import com.example.coinwave.ui.screen.market.repository.CoinRepository
+import com.example.coinwave.data.source.network.ApiDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  private val repository: CoinRepository
+  private val repository: ApiDataSource
 ) : ViewModel() {
   private val _inputText: MutableStateFlow<String> = MutableStateFlow("")
   val inputText: StateFlow<String> = _inputText

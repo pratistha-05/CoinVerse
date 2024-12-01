@@ -1,4 +1,4 @@
-package com.example.coinwave.data.service.model.database
+package com.example.coinwave.data.source.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

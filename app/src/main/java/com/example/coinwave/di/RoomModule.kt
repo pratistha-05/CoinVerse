@@ -2,8 +2,7 @@ package com.example.coinwave.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.coinwave.common.Constants.COIN_DATABASE_NAME
-import com.example.coinwave.data.service.model.database.CoinDatabase
+import com.example.coinwave.data.source.database.CoinDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +20,7 @@ object RoomModule {
     return Room.databaseBuilder(
       context.applicationContext,
       CoinDatabase::class.java,
-      COIN_DATABASE_NAME
+      "favourite_data_table"
     ).build()
   }
 }

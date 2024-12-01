@@ -60,9 +60,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun MarketScreen(
   navController: NavHostController,
-  //  onCoinClick: (CoinItem) -> Unit,
   viewModel: MarketViewModel = hiltViewModel()
-
 ) {
   val listState = rememberLazyListState()
   val snackbarHostState = remember { SnackbarHostState() }
@@ -73,7 +71,6 @@ fun MarketScreen(
   val dynamicTextColor = if (scrollFraction > 0.5f) Color.Black else Color.White
   val lifecycleOwner = LocalLifecycleOwner.current
 
-  // Start the periodic refresh only when the screen is visible
   LaunchedEffect(Unit) {
     viewModel.startPeriodicDataRefresh(lifecycleOwner)
   }
@@ -120,7 +117,9 @@ fun MarketScreen(
       ) {
         MarketList(
           coinList = coinList,
-          //        onCoinClick = onCoinClick,
+          onCoinClick = { coinItem ->
+            navController.navigate("details/${coinItem.id}")
+          },
           lazyListState = listState,
           selectedSort = selectedSort ,
           updateSortParams = { sortParams->
@@ -164,7 +163,7 @@ fun MarketTopBar(
 @Composable
 fun MarketList(
   coinList: List<CoinItem>,
-  //  onCoinClick: (CoinItem) -> Unit,
+  onCoinClick: (CoinItem) -> Unit,
   lazyListState: LazyListState,
   selectedSort : SortParams,
   updateSortParams:(SortParams) -> Unit,
@@ -205,7 +204,8 @@ fun MarketList(
       } else {
         MarketCoinListItem(
           item = coinListItem,
-          modifier = Modifier.padding(bottom = 8.dp) // onCoinClick = { onCoinClick(coinListItem) }
+          modifier = Modifier.padding(bottom = 8.dp) ,
+         onCoinClick = { onCoinClick(coinListItem) }
         )
       }
     }

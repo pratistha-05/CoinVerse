@@ -1,7 +1,7 @@
 package com.example.coinwave.data.source.room
 
-import com.example.coinwave.data.service.model.database.Coin
-import com.example.coinwave.data.service.model.database.FavouriteDao
+import com.example.coinwave.data.source.database.Coin
+import com.example.coinwave.data.source.database.dao.FavouriteDao
 
 class RoomRepository(val dao: FavouriteDao){
 
@@ -15,4 +15,7 @@ class RoomRepository(val dao: FavouriteDao){
     dao.deleteFavourite(coin)
   }
 
+  suspend fun deleteAll(){
+    dao.deleteAllFavouriteCoins()
+  }
 }
