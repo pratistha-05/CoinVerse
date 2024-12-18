@@ -1,8 +1,10 @@
 package com.example.coinwave.data.service
 
+import com.example.coinwave.data.service.model.CoinDetailsResponse
 import com.example.coinwave.data.service.model.CoinListResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CoinService {
@@ -20,4 +22,10 @@ interface CoinService {
   suspend fun searchCoins(
     @Query("query") query: String?=null,
   ): Response<CoinListResponse>
+
+  @GET("coin/{coinId}")
+  suspend fun getCoinDetails(
+    @Path("coinId") coinId: String,
+    @Query("referenceCurrencyUuid") currencyUUID: String = "yhjMzLPhuIDl"
+  ): Response<CoinDetailsResponse>
 }
